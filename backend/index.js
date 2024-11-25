@@ -19,24 +19,24 @@ app.get('/rats', async (req, res) => {
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || null;
     let orderby = req.query.groupby || null;
-    if (orderby) orderby =  orderby.toLowerCase();
+    if (orderby) orderby = orderby.toLowerCase();
     let order = req.query.order || null;
-    if(order) order =  order.toLowerCase();
+    if (order) order = order.toLowerCase();
     let searchterm = req.query.searchterm || null;
     let offset = 0;
-    if(limit) offset = (page - 1) * limit;
+    if (limit) offset = (page - 1) * limit;
     try {
-        const validOrder = ['asc','desc'];
-        if(order) if(!validOrder.includes(order))  order = null; 
+        const validOrder = ['asc', 'desc'];
+        if (order) if (!validOrder.includes(order)) order = null;
 
         const validOrderBy = ['id', 'species', 'name', 'special_dish', 'height', 'salary', 'ranking', 'job'];
-        if(orderby) if(!validOrderBy.includes(orderby)) orderby = null;
+        if (orderby) if (!validOrderBy.includes(orderby)) orderby = null;
 
-        if(searchterm) searchterm = validOrderBy.map(e => e +` LIKE '%${searchterm}%'`).join(' OR ');
+        if (searchterm) searchterm = validOrderBy.map(e => e + ` LIKE '%${searchterm}%'`).join(' OR ');
 
         const countResult = await db.query('SELECT COUNT(*) as total FROM chef_rats');
         const total = countResult[0][0].total;
-        const temp = await db.query('SELECT * FROM chef_rats '+ (searchterm) ? `${searchterm} ` : '' + (orderby) ? `ORDER BY ${orderby} ` : '' + (order) ? `${order}` : '' + (limit) ? `LIMIT ${limit}` : '' +'  OFFSET ?', [offset]);
+        const temp = await db.query('SELECT * FROM chef_rats ' + (searchterm) ? `${searchterm} ` : '' + (orderby) ? `ORDER BY ${orderby} ` + (order ? `${order}` : '') : '' + (limit) ? `LIMIT ${limit}` : '' + '  OFFSET ?', [offset]);
         const rows = temp[0];
         const fields = temp[1];
         res.status(200).json({
@@ -70,19 +70,41 @@ app.post('/rats', async (req, res) => {
     try {
         let tabletData = [req.body.species, req.body.name, req.body.special_dish, req.body.height, req.body.salary, req.body.ranking, req.body.job];
         const [rows, fields] = await db.query('INSERT INTO chef_rats (species, name, special_dish, height, salary, ranking, job) VALUES (?,?,?,?,?,?,?)', tabletData);
-        res.redirect('http://localhost:5173/ratlista');
-    } 
+        res.redirect('http://localhost:5173/list');
+    }
     catch (error) {
         console.error(`Error inserting rats in the cage ${error}`);
         res.status(500).send("Internal Server Error");
     }
 })
 
+app.patch('/rats/:id', async (req, res) => {
+    try {
+        const id = req.params.id;
+        const { species, name, special_dish, height, salary, ranking, job } = req.body;
+
+        const [rows, fields] = await db.query(
+            'UPDATE chef_rats SET ' + (species ? `species = ${species}, ` : '') + (name ? `name = ${name}, ` : '') + (special_dish ? `special_dish = ${special_dish}, ` : '') + (height ? `height = ${height}, ` : '') + (salary ? `salary = ${salary}, ` : '') + (ranking ? `ranking = ${ranking}, ` : '') + (job ? `job = ${job}, ` : '') +'WHERE id = ?',
+            [id]
+        );
+
+        if (rows.affectedRows > 0) {
+            res.redirect('http://localhost:5173/list');
+        } else {
+            res.status(404).send("Rat not found");
+        }
+    }
+    catch (error) {
+        console.error(`Error updating the rat record: ${error}`);
+        res.status(500).send("Internal Server Error");
+    }
+});
+
 app.delete('/rats/:id', async (req, res) => {
     try {
         let ratId = parseInt(req.params.id);
         const [rows, fields] = await db.query('DELETE FROM chef_rats WHERE id = ?', [ratId]);
-    } 
+    }
     catch (error) {
         console.error(`Error deleting rats ${error}`);
         res.status(500).send("Internal Server Error");
