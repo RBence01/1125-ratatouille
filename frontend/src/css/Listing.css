@@ -1,0 +1,87 @@
+.container {
+    width: 80%;
+    margin: auto;
+}
+
+table a {
+    color: var(--textColor);
+    text-decoration: none;
+}
+
+table {
+    width: 100%;
+}
+table, tr, td, th {
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+
+th, td {
+    padding: 5px;
+}
+
+tr, td {
+    cursor: pointer;
+}
+
+.center {
+    text-align: center;
+}
+
+.sort {
+    cursor: pointer;
+    user-select: none;
+}
+
+.sort.ASC::after {
+    content: '↓';
+}
+
+.sort.DESC::after {
+    content: '↑';
+}
+
+.search {
+    position: relative;
+    width: 50%;
+    margin: auto;
+    margin-bottom: 10px;
+}
+
+.search input {
+    width: 100%;
+    border: none;
+    border-bottom: 1px solid black;
+    padding: 0;
+}
+
+.search div {
+    position: absolute;
+    inset: 0;
+    content: "";
+    width: 0%;
+    border-bottom: 1px solid lightblue;
+    transition: width 0.5s ease-in-out;
+}
+
+.search input:focus-visible {
+    border: none;
+    outline: none;
+    border-bottom: 1px solid black;
+}
+
+.search input:focus-visible + div {
+    width: 100%;
+}
+
+.pages {
+    display: flex;
+    width: fit-content;
+    margin: auto;
+    margin-top: 10px;
+    gap: 5px;
+}
+
+.pages > * {
+    padding: 10px;
+}
