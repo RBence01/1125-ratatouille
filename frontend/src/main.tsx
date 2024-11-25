@@ -13,7 +13,11 @@ createRoot(document.getElementById('root')!).render(
         <Route path='/' element={<Layout/>}>
           <Route index element={<h1>Home</h1>} />
           <Route path='new' element={<NewData/>} />
-          <Route path='lista' element={<Listing searchOn orderOn pagesOn/>} />
+          <Route path='list' element={<Listing/>} />
+          <Route path='search' element={<Listing searchOn/>} />
+          <Route path='order' element={<Listing orderOn/>} />
+          <Route path='pages' element={<Listing pagesOn/>} />
+
         </Route>
     </Routes>
     </BrowserRouter>
