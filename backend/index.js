@@ -34,7 +34,7 @@ app.get('/rats', async (req, res) => {
 
         if (searchterm) searchterm = validOrderBy.map(e => e + ` LIKE '%${searchterm}%'`).join(' OR ');
 
-        const countResult = await db.query('SELECT COUNT(*) as total FROM chef_rats');
+        const countResult = await db.query('SELECT COUNT(*) as total FROM chef_rats' + ((searchterm) ? ` WHERE ${searchterm}` : ''));
         const total = countResult[0][0].total;
         const temp = await db.query('SELECT * FROM chef_rats ' + (searchterm) ? `${searchterm} ` : '' + (orderby) ? `ORDER BY ${orderby} ` + (order ? `${order}` : '') : '' + (limit) ? `LIMIT ${limit}` : '' + '  OFFSET ?', [offset]);
         const rows = temp[0];

@@ -4,6 +4,7 @@ import './index.css'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import Layout from './pages/Layout'
 import Listing from './components/Listing'
+import { NewData } from './pages/NewData'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -11,7 +12,12 @@ createRoot(document.getElementById('root')!).render(
     <Routes>
         <Route path='/' element={<Layout/>}>
           <Route index element={<h1>Home</h1>} />
-          <Route path='rats' element={<Listing/>} />
+          <Route path='new' element={<NewData/>} />
+          <Route path='list' element={<Listing/>} />
+          <Route path='search' element={<Listing searchOn/>} />
+          <Route path='order' element={<Listing orderOn/>} />
+          <Route path='pages' element={<Listing pagesOn/>} />
+
         </Route>
     </Routes>
     </BrowserRouter>
