@@ -1,6 +1,5 @@
 import { useState } from "react";
-import { Alert, Button, Col, Container } from "react-bootstrap";
-import { Form } from "react-router";
+import { Alert, Button, Form, Container, Row, Col } from "react-bootstrap";
 
 export function NewData(){
     const [status, setStatus] = useState<string | null>(null);
@@ -39,8 +38,9 @@ export function NewData(){
 
     return(
         <>
-           <main>
             <Container>
+            <Row className="justify-content-md-center">
+                <Col md={6}>
                 <Form onSubmit={submit}>
                     <label htmlFor="sepcies">Species</label><br />
                     <input type="text" name="sepcies" id="sepcies" required /><br />
@@ -63,15 +63,18 @@ export function NewData(){
                     <label htmlFor="job">Job</label><br />
                     <input type="number" name="job" id="job" required /><br />
 
-                    <Button variant="dark" type="submit" value="submit" />
+                    <Button variant="dark" type="submit" value="submit">
+                        Submit
+                    </Button>
                 </Form>
                 {status && (
                         <Alert variant={status.startsWith('Error') ? 'danger' : 'success'} className="mt-3">
                             {status}
                         </Alert>
                     )}
-                </Container>
-            </main>
+                </Col>
+                </Row>
+            </Container>
         </>
     )
 }
