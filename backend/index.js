@@ -18,9 +18,11 @@ const db = mysql.createPool({
 app.get('/rats', async (req, res) => {
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || null;
-    const orderby = req.query.groupby.toLowerCase() || null;
-    const order = req.query.order.toLowerCase() || null;
-    //const searchterm = req.query.searchterm.
+    let orderby = req.query.groupby || null;
+    if (orderby) orderby =  orderby.toLowerCase();
+    let order = req.query.order || null;
+    if(order) order =  order.toLowerCase();
+    let searchterm = req.query.searchterm || null;
     let offset = 0;
     if(limit) offset = (page - 1) * limit;
     try {
@@ -30,9 +32,11 @@ app.get('/rats', async (req, res) => {
         const validOrderBy = ['id', 'species', 'name', 'special_dish', 'height', 'salary', 'ranking', 'job'];
         if(orderby) if(!validOrderBy.includes(orderby)) orderby = null;
 
+        if(searchterm) searchterm = validOrderBy.map(e => e +` LIKE '%${searchterm}%'`).join(' OR ');
+
         const countResult = await db.query('SELECT COUNT(*) as total FROM chef_rats');
         const total = countResult[0][0].total;
-        const temp = await db.query('SELECT * FROM chef_rats'+ (orderby) ? `ORDER BY ${orderby}` : '' + (order) ? `${order}` : '' + (limit) ? `LIMIT ${limit}` : '' +'  OFFSET ?', [offset]);
+        const temp = await db.query('SELECT * FROM chef_rats '+ (searchterm) ? `${searchterm} ` : '' + (orderby) ? `ORDER BY ${orderby} ` : '' + (order) ? `${order}` : '' + (limit) ? `LIMIT ${limit}` : '' +'  OFFSET ?', [offset]);
         const rows = temp[0];
         const fields = temp[1];
         res.status(200).json({
@@ -41,7 +45,7 @@ app.get('/rats', async (req, res) => {
             totalPages: Math.ceil(total / limit),
         });
     } catch (error) {
-        console.error(`Error retrieving phones ${error}`);
+        console.error(`Error retrieving rats ${error}`);
         res.status(500).json({ error: "Internal Server Error" });
     }
 })
@@ -69,7 +73,7 @@ app.post('/rats', async (req, res) => {
         res.redirect('http://localhost:5173/ratlista');
     } 
     catch (error) {
-        console.error(`Error inserting phone ${error}`);
+        console.error(`Error inserting rats in the cage ${error}`);
         res.status(500).send("Internal Server Error");
     }
 })
@@ -80,7 +84,7 @@ app.delete('/rats/:id', async (req, res) => {
         const [rows, fields] = await db.query('DELETE FROM chef_rats WHERE id = ?', [ratId]);
     } 
     catch (error) {
-        console.error(`Error deleting phone ${error}`);
+        console.error(`Error deleting rats ${error}`);
         res.status(500).send("Internal Server Error");
     }
 })
