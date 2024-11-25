@@ -1,6 +1,5 @@
 import { useState } from "react";
-import { Alert, Button, Col, Container } from "react-bootstrap";
-import { Form } from "react-router";
+import { Alert, Button, Col, Container, Form } from "react-bootstrap";
 
 export function NewData(){
     const [status, setStatus] = useState<string | null>(null);
