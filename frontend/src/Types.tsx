@@ -2,7 +2,7 @@ export type chefRat = {
     id: number;
     species: string;
     name: string;
-    specialDish: string;
+    special_dish: string;
     height: number;
     salary: number;
     ranking: number;

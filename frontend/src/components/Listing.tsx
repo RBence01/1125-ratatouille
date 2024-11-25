@@ -3,7 +3,7 @@ import { chefRat } from "../Types";
 import "../css/Listing.css";
 
 export default function Listing({ pagesOn = false, searchOn = false, orderOn = false }: { pagesOn?: boolean, searchOn?: boolean, orderOn?: boolean }) {
-    const [data, setData] = useState<{ data: chefRat[], pages: number } | null>(null);
+    const [data, setData] = useState<{ data: chefRat[], totalPages: number } | null>(null);
     const [sortData, setSortData] = useState<{ col: string, direction: string } | undefined>(undefined);
     const [searchQuery, setSearchQuery] = useState<string | undefined>(undefined);
     const [page, setPage] = useState<number>(1);
@@ -19,10 +19,10 @@ export default function Listing({ pagesOn = false, searchOn = false, orderOn = f
 
     async function load(limit?: number, page?: number, search?: string, orderBy?: string, direction?: string,) {
         const params: any = {};
-        if (searchOn && search) params.search = search;
+        if (searchOn && search) params.searchterm = search;
         if (pagesOn && limit) params.limit = limit;
-        if (pagesOn && page) params.page = page
-        if (orderOn && orderBy) params.groupby = orderBy;
+        if (pagesOn && page) params.page = page;
+        if (orderOn && orderBy) params.orderby = orderBy;
         if (orderOn && direction) params.order = direction;
         const response = await fetch('http://localhost:3000/rats?' + new URLSearchParams(params));
         setData(await response.json());
@@ -53,14 +53,14 @@ export default function Listing({ pagesOn = false, searchOn = false, orderOn = f
     function changePage(event: any) {
         const pageValue = event.target.dataset.page;
         if (pageValue == "b") setPage(Math.max(1, page - 1));
-        else if (pageValue == "f") setPage(Math.min(data!.pages, page + 1));
+        else if (pageValue == "f") setPage(Math.min(data!.totalPages, page + 1));
         else setPage(pageValue);
     }
 
     let pages;
-    if (data?.pages) {
+    if (data?.totalPages) {
         pages = [];
-        for (let i = 1; i <= data?.pages; i++) pages.push(i);
+        for (let i = 1; i <= data?.totalPages; i++) pages.push(i);
     }
 
     return <>
@@ -88,7 +88,7 @@ export default function Listing({ pagesOn = false, searchOn = false, orderOn = f
                         <td>{e.species}</td>
                         <td>{e.name}</td>
                         <td>{e.job}</td>
-                        <td>{e.specialDish}</td>
+                        <td>{e.special_dish}</td>
                         <td>{e.height}</td>
                         <td>{e.salary}</td>
                     </tr>)}
