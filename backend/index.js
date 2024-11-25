@@ -21,7 +21,8 @@ app.get('/rats', async (req, res) => {
     const orderby = req.query.groupby.toLowerCase() || null;
     const order = req.query.order.toLowerCase() || null;
     //const searchterm = req.query.searchterm.
-    const offset = (page - 1) * limit;
+    let offset = 0;
+    if(limit) offset = (page - 1) * limit;
     try {
         const validOrder = ['asc','desc'];
         if(order) if(!validOrder.includes(order))  order = null; 
@@ -29,9 +30,9 @@ app.get('/rats', async (req, res) => {
         const validOrderBy = ['id', 'species', 'name', 'special_dish', 'height', 'salary', 'ranking', 'job'];
         if(orderby) if(!validOrderBy.includes(orderby)) orderby = null;
 
-        const countResult = await db.query('SELECT COUNT(*) as total FROM tabletek');
+        const countResult = await db.query('SELECT COUNT(*) as total FROM chef_rats');
         const total = countResult[0][0].total;
-        const temp = await db.query('SELECT * FROM tabletek'+ (orderby) ? `ORDER BY ${orderby}` : '' + (order) ? `${order}` : '' + (limit) ? `LIMIT ${limit}` : '' +'  OFFSET ?', [offset]);
+        const temp = await db.query('SELECT * FROM chef_rats'+ (orderby) ? `ORDER BY ${orderby}` : '' + (order) ? `${order}` : '' + (limit) ? `LIMIT ${limit}` : '' +'  OFFSET ?', [offset]);
         const rows = temp[0];
         const fields = temp[1];
         res.status(200).json({
@@ -76,7 +77,7 @@ app.post('/rats', async (req, res) => {
 app.delete('/rats/:id', async (req, res) => {
     try {
         let ratId = parseInt(req.params.id);
-        const [rows, fields] = await db.query('DELETE FROM tabletek WHERE id = ?', [ratId]);
+        const [rows, fields] = await db.query('DELETE FROM chef_rats WHERE id = ?', [ratId]);
     } 
     catch (error) {
         console.error(`Error deleting phone ${error}`);
