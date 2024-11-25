@@ -12,6 +12,8 @@ export function NavBar (){
           <Nav.Link href="/new">Add new</Nav.Link>
           <Nav.Link href="/delete">Delete data</Nav.Link>
           <Nav.Link href="/search">Search</Nav.Link>
+          <Nav.Link href="/order">Order</Nav.Link>
+          <Nav.Link href="/pages">Pages</Nav.Link>
         </Nav>
       </Navbar.Collapse>
     </Container>
