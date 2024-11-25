@@ -7,11 +7,11 @@ export function NavBar (){
       <Navbar.Toggle aria-controls="basic-navbar-nav" />
       <Navbar.Collapse id="basic-navbar-nav">
         <Nav className="me-auto">
-          <Nav.Link href="/">Kezdőlap</Nav.Link>
-          <Nav.Link href="/lista">Lista</Nav.Link>
-          <Nav.Link href="/felvetel">Felvétel</Nav.Link>
-          <Nav.Link href="/torles">Törlés</Nav.Link>
-          <Nav.Link href="/kereses">Keresés és Rendezés</Nav.Link>
+          <Nav.Link href="/">Home</Nav.Link>
+          <Nav.Link href="/list">List</Nav.Link>
+          <Nav.Link href="/new">Add new</Nav.Link>
+          <Nav.Link href="/delete">Delete data</Nav.Link>
+          <Nav.Link href="/search">Search</Nav.Link>
         </Nav>
       </Navbar.Collapse>
     </Container>
