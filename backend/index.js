@@ -12,21 +12,21 @@ const db = mysql.createPool({
     host: 'localhost',
     user: 'root',
     password: '',
-    database: 'webbolt'
+    database: 'chef_chef_rats'
 }).promise();
 
-app.get('/tablets', async (req, res) => {
+app.get('/rats', async (req, res) => {
     try {
-        const temp = await db.query('SELECT * FROM tablets');
+        const temp = await db.query('SELECT * FROM chef_rats');
         const rows = temp[0];
         res.status(200).json(rows);
     } catch (error) {
-        console.error(`Error retrieving tablets ${error}`);
+        console.error(`Error retrieving chef_rats ${error}`);
         res.status(500).json({ error: "Internal Server Error" });
     }
 })
 
-app.get('/tablets/search', async (req, res) => {
+app.get('/rats/search', async (req, res) => {
     try {
         let { search, orderBy, limit, direction, page } = req.query;
 
@@ -41,7 +41,7 @@ app.get('/tablets/search', async (req, res) => {
         }
 
         const searchConditions = validOrderByFields.map(field => `${field} LIKE ?`).join(' OR ');
-        const sql = `SELECT * FROM tablets` + (search ? ` WHERE ${searchConditions}` : '') +
+        const sql = `SELECT * FROM chef_rats` + (search ? ` WHERE ${searchConditions}` : '') +
             (orderBy ? ` ORDER BY ${orderBy} ${direction}` : '') +
             ` LIMIT ? OFFSET ?`;
 
@@ -51,15 +51,15 @@ app.get('/tablets/search', async (req, res) => {
         params.push((page - 1) * limit);
         const data = (await db.query(sql, params))[0];
         
-        const count = (await db.query('SELECT COUNT(*) FROM tablets'))[0][0]['COUNT(*)'];
+        const count = (await db.query('SELECT COUNT(*) FROM chef_rats'))[0][0]['COUNT(*)'];
         res.status(200).json({data, pages: Math.ceil(count / limit)});
     } catch (error) {
-        console.error(`Error searching tablets ${error}`);
+        console.error(`Error searching chef_rats ${error}`);
         res.status(500).json({ error: "Internal Server Error" });
     }
 });
 
-app.get('/tablets/order', async (req, res) => {
+app.get('/rats/order', async (req, res) => {
     try {
         let { orderBy, limit, direction } = req.query;
         if (!orderBy || !limit) {
@@ -75,33 +75,33 @@ app.get('/tablets/order', async (req, res) => {
         if (!['name', 'brand', 'price', 'discounted_from', 'rating', 'review_count', 'operating_system', 'processor_clock_speed', 'processor_cores', 'display_size', 'display_resolution', 'storage_capacity'].includes(orderBy.toLowerCase())) {
             res.status(400).json({ error: "Invalid orderBy value" })
         }
-        const temp = await db.query('SELECT * FROM tablets ORDER BY ' + orderBy + ' ' + direction + ' LIMIT ?', [limit]);
+        const temp = await db.query('SELECT * FROM chef_rats ORDER BY ' + orderBy + ' ' + direction + ' LIMIT ?', [limit]);
         const rows = temp[0];
         res.status(200).json(rows);
     } catch (error) {
-        console.error(`Error retrieving tablets ${error}`);
+        console.error(`Error retrieving chef_rats ${error}`);
         res.status(500).json({ error: "Internal Server Error" });
     }
 })
 
-app.get('/tablets/:id', async (req, res) => {
+app.get('/rats/:id', async (req, res) => {
     try {
         const id = req.params.id;
         if (!id) {
             res.sendStatus(500);
             return;
         }
-        const temp = await db.query('SELECT * FROM tablets WHERE id = ?', [id]);
+        const temp = await db.query('SELECT * FROM chef_rats WHERE id = ?', [id]);
         const row = temp[0][0];
         res.status(200).json(row);
     } catch (error) {
-        console.error(`Error retrieving tablets ${error}`);
+        console.error(`Error retrieving chef_rats ${error}`);
         res.status(500).json({ error: "Internal Server Error" });
     }
 })
 
 
-app.post('/tablets', async (req, res) => {
+app.post('/rats', async (req, res) => {
     try {
         const { name, brand, price, discounted_price: discounted_from, operating_system,
             display_resolution, display_size, processor_clock_speed,
@@ -115,7 +115,7 @@ app.post('/tablets', async (req, res) => {
             return;
         }
         const temp = await db.query(
-            'INSERT INTO tablets (brand, name, price, discounted_from, operating_system, display_resolution, display_size, processor_clock_speed, processor_cores, storage_capacity, image_src) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
+            'INSERT INTO chef_rats (brand, name, price, discounted_from, operating_system, display_resolution, display_size, processor_clock_speed, processor_cores, storage_capacity, image_src) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
             [brand, name, price, discounted_from, operating_system, display_resolution, display_size, processor_clock_speed, processor_cores, storage_capacity, image_src]
         );
         res.sendStatus(201);
@@ -125,14 +125,14 @@ app.post('/tablets', async (req, res) => {
     }
 })
 
-app.delete('/tablets/:id', async (req, res) => {
+app.delete('/rats/:id', async (req, res) => {
     try {
         const id = req.params.id;
         if (!id) {
             res.status(400).send("Bad Request");
             return;
         }
-        const temp = await db.query('DELETE FROM tablets WHERE id = ?', [id]);
+        const temp = await db.query('DELETE FROM chef_rats WHERE id = ?', [id]);
         res.sendStatus(204);
     } catch (error) {
         console.error(`Error deleting phone ${error}`);
