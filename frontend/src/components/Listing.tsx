@@ -3,7 +3,7 @@ import { chefRat } from "../Types";
 import "../css/Listing.css";
 import Switch from "./Switch";
 
-export default function Listing({ pagesOn = false, searchOn = false, orderOn = false, deleteOn = false, switchOn = false, editOn = false}: { pagesOn?: boolean, searchOn?: boolean, orderOn?: boolean, deleteOn?: boolean, switchOn?: boolean, editOn?: boolean}) {
+export default function Listing({ pagesOn = false, searchOn = false, orderOn = false, deleteOn = false, switchOn = false, editOn = false, plusMinusOn = false}: { pagesOn?: boolean, searchOn?: boolean, orderOn?: boolean, deleteOn?: boolean, switchOn?: boolean, editOn?: boolean, plusMinusOn?: boolean}) {
     const [data, setData] = useState<{ data: chefRat[], totalPages: number } | null>(null);
     const [sortData, setSortData] = useState<{ col: string, direction: string } | undefined>(undefined);
     const [searchQuery, setSearchQuery] = useState<string | undefined>(undefined);
@@ -71,6 +71,7 @@ export default function Listing({ pagesOn = false, searchOn = false, orderOn = f
     }
 
     function patch(event : any){
+        console.log("sdasd");
         const parentElement = event.target.parentElement;
         const id = parentElement.dataset.id;
         let moded : any = {}
@@ -82,6 +83,7 @@ export default function Listing({ pagesOn = false, searchOn = false, orderOn = f
         const parentElement = event.target.parentElement.parentElement.parentElement;
         console.log(parentElement);
         const id = parentElement.dataset.id;
+        console.log(id);
         let moded = {is_working: event.target.value}
         fetch(`http://localhost:3000/rats/${id}`, {method: "PATCH", headers:{'Content-Type': 'application/json',}, body: JSON.stringify(moded)});
     }
@@ -115,12 +117,12 @@ export default function Listing({ pagesOn = false, searchOn = false, orderOn = f
                 <tbody>
                     {data && data.data.map((e) => <tr key={e.id} data-id={e.id}>
                         <td>{e.ranking}</td>
-                        <td contentEditable={editOn} onKeyDown={onChangege} data-name={"species"} onBlur={patch}>{e.species}</td>
-                        <td contentEditable={editOn} onKeyDown={onChangege} data-name={"name"} onBlur={patch}>{e.name}</td>
-                        <td contentEditable={editOn} onKeyDown={onChangege} data-name={"job"} onBlur={patch}>{e.job}</td>
-                        <td contentEditable={editOn} onKeyDown={onChangege} data-name={"special_dish"} onBlur={patch}>{e.special_dish}</td>
-                        <td contentEditable={editOn} onKeyDown={onChangege} data-name={"height"} onBlur={patch}>{e.height}</td>
-                        <td contentEditable={editOn} onKeyDown={onChangege} data-name={"salary"} onBlur={patch}>{e.salary}</td>
+                        <td contentEditable={editOn} onKeyDown={onChangege} data-name={"species"} onBlur={editOn ? patch : () => {}}>{e.species}</td>
+                        <td contentEditable={editOn} onKeyDown={onChangege} data-name={"name"} onBlur={editOn ? patch : () => {}}>{e.name}</td>
+                        <td contentEditable={editOn} onKeyDown={onChangege} data-name={"job"} onBlur={editOn ? patch : () => {}}>{e.job}</td>
+                        <td contentEditable={editOn} onKeyDown={onChangege} data-name={"special_dish"} onBlur={editOn ? patch : () => {}}>{e.special_dish}</td>
+                        <td contentEditable={editOn} onKeyDown={onChangege} data-name={"height"} onBlur={editOn ? patch : () => {}}>{e.height}</td>
+                        <td contentEditable={editOn} onKeyDown={onChangege} data-name={"salary"} onBlur={editOn ? patch : () => {}}>{plusMinusOn && <button>←</button>}{e.salary}{plusMinusOn && <button>→</button>}</td>
                         <td><Switch round editOn={switchOn || editOn} defaultValue={e.is_working} onChange={switchPatch}/></td>
                         {deleteOn && <td onClick={del}>Delete</td>}
                     </tr>)}

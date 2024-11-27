@@ -16,6 +16,7 @@ export function NavBar (){
           <Nav.Link href="/pages">Pages</Nav.Link>
           <Nav.Link href="/switch">Switching</Nav.Link>
           <Nav.Link href="/edit">Editing</Nav.Link>
+          <Nav.Link href="/plusminus">PlusMinus</Nav.Link>
         </Nav>
       </Navbar.Collapse>
     </Container>

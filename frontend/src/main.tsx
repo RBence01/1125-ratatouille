@@ -20,6 +20,7 @@ createRoot(document.getElementById('root')!).render(
           <Route path='delete' element={<Listing deleteOn/>} />
           <Route path='switch' element={<Listing switchOn/>} />
           <Route path='edit' element={<Listing editOn/>} />
+          <Route path='plusminus' element={<Listing plusMinusOn/>} />
         </Route>
     </Routes>
     </BrowserRouter>
