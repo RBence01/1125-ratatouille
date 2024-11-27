@@ -18,7 +18,7 @@ createRoot(document.getElementById('root')!).render(
           <Route path='order' element={<Listing orderOn/>} />
           <Route path='pages' element={<Listing pagesOn/>} />
           <Route path='delete' element={<Listing deleteOn/>} />
-          <Route path='switch' element={<Listing />} />
+          <Route path='switch' element={<Listing switchOn/>} />
           <Route path='edit' element={<Listing editOn/>} />
         </Route>
     </Routes>
