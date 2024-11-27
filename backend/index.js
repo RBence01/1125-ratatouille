@@ -78,7 +78,6 @@ app.post('/rats', async (req, res) => {
     try {
         let ratData = [req.body.species, req.body.name, req.body.special_dish, req.body.height, req.body.salary, req.body.ranking, req.body.job, req.body.is_working];
         const [rows, fields] = await db.query('INSERT INTO chef_rats (species, name, special_dish, height, salary, ranking, job) VALUES (?,?,?,?,?,?,?)', ratData);
-        res.redirect('http://localhost:5173/list');
     } 
     catch (error) {
         console.error(`Error inserting rats in the cage ${error}`);
@@ -102,12 +101,6 @@ app.patch('/rats/:id', async (req, res) => {
             'UPDATE chef_rats SET' + updateString +' WHERE id = ?',
             [id]
         );
-
-        if (rows.affectedRows > 0) {
-            res.redirect('http://localhost:5173/list');
-        } else {
-            res.status(404).send("Rat not found");
-        }
     }
     catch (error) {
         console.error(`Error updating the rat record: ${error}`);
