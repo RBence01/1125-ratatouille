@@ -12,34 +12,30 @@ export function NewData(){
         const special_dish = e.target[2].value;
         const height = e.target[3].value;
         const salary = e.target[4].value;
-        const ranking : number = e.target[5].value;
+        const ranking : number = parseInt(e.target[5].value);
         const job = e.target[6].value;
 
-        console.log(rankings!.includes(ranking));
-        
-        
-        const response = await fetch('http://localhost:3000/rats', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                species,
-                name,
-                special_dish,
-                height,
-                salary,
-                ranking,
-                job
-            }),
-        });
+        console.log(rankings);
+
         if (!rankings!.includes(ranking)) {
-            if (response.status === 201) {
-                setStatus('New rat added!');
-                console.log(status);
-            } else {
-                setStatus('Error: ' + (await response.text()));
-            }
+            if (rankings) setRanking([...rankings, ranking])
+            setStatus("Successfully added!");
+            console.log("ez ni ez?");
+            const response = await fetch('http://localhost:3000/rats', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    species,
+                    name,
+                    special_dish,
+                    height,
+                    salary,
+                    ranking,
+                    job
+                }),
+            });
         } else{
             setStatus('Error: That rank already exists!')
         }

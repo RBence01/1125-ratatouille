@@ -91,9 +91,11 @@ app.patch('/rats/:id', async (req, res) => {
         const valid = ["species", "name", "special_dish", "height", "salary", "ranking", "job", "is_working"];
         let updateString = '';
         valid.forEach(element => {
-            if (req.body[element]) updateString += ` ${element} = '${req.body[element]}',`;
+            if (req.body[element] != undefined) updateString += ` ${element} = '${req.body[element]}',`;
         });
         updateString = updateString.slice(0, -1);
+        console.log(req.body);
+        console.log(updateString);
 
         const [rows, fields] = await db.query(
             'UPDATE chef_rats SET' + updateString + ' WHERE id = ?',

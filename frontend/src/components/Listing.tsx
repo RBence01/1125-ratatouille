@@ -82,7 +82,7 @@ export default function Listing({ pagesOn = false, searchOn = false, orderOn = f
     function switchPatch(event : any){
         const parentElement = event.target.parentElement.parentElement.parentElement;
         const id = parentElement.dataset.id;
-        let moded = {is_working: event.target.value == 'on' ? 1 : 0}
+        let moded = {is_working: (event.target.checked ? 1 : 0)}
         fetch(`http://localhost:3000/rats/${id}`, {method: "PATCH", headers:{'Content-Type': 'application/json',}, body: JSON.stringify(moded)});
     }
 
