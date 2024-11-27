@@ -15,6 +15,7 @@ export function NavBar (){
           <Nav.Link href="/order">Order</Nav.Link>
           <Nav.Link href="/pages">Pages</Nav.Link>
           <Nav.Link href="/switch">Switching</Nav.Link>
+          <Nav.Link href="/edit">Editing</Nav.Link>
         </Nav>
       </Navbar.Collapse>
     </Container>
