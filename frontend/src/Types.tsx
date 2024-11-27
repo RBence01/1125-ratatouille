@@ -7,4 +7,5 @@ export type chefRat = {
     salary: number;
     ranking: number;
     job: string;
+    is_working: boolean;
 }
