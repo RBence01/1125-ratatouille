@@ -3,6 +3,7 @@ import { Alert, Button, Col, Container, Form, Row } from "react-bootstrap";
 
 export function NewData(){
     const [status, setStatus] = useState<string | null>(null);
+    const [rankings, setRanking] = useState<string | null>(null);
 
     async function submit(e: any) {
         e.preventDefault();
@@ -14,6 +15,8 @@ export function NewData(){
         const ranking = e.target[5].value;
         const job = e.target[6].value;
 
+        const list = await fetch('http://localhost:3000/rats/ranks');
+        setRanking(await list.json());
         const response = await fetch('http://localhost:3000/rats', {
             method: 'POST',
             headers: {
@@ -29,12 +32,17 @@ export function NewData(){
                 job
             }),
         });
-        if (response.status === 201) {
-            setStatus('New rat added!');
-            console.log(status);
-        } else {
-            setStatus('Error: ' + (await response.text()));
+        if (!rankings?.includes(ranking)) {
+            if (response.status === 201) {
+                setStatus('New rat added!');
+                console.log(status);
+            } else {
+                setStatus('Error: ' + (await response.text()));
+            }
+        } else{
+            setStatus('Error: That rank already exists!')
         }
+        
     }
 
     return(
