@@ -14,7 +14,7 @@ export function NewData(){
         const ranking = e.target[5].value;
         const job = e.target[6].value;
 
-        const response = await fetch('https://localhost:3000/rats', {
+        const response = await fetch('http://localhost:3000/rats', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
