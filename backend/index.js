@@ -82,7 +82,7 @@ app.patch('/rats/:id', async (req, res) => {
     try {
         const id = req.params.id;
         const { species, name, special_dish, height, salary, ranking, job } = req.body;
-        const valid = ["species", "name", "special_dish", "height", "salary", "ranking", "job"];
+        const valid = ["species", "name", "special_dish", "height", "salary", "ranking", "job", "is_working"];
         let updateString = '';
         valid.forEach(element => {
             if(req.body[element]) updateString += ` ${element} = '${req.body[element]}',`;

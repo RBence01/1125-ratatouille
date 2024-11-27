@@ -71,10 +71,18 @@ export default function Listing({ pagesOn = false, searchOn = false, orderOn = f
     }
 
     function patch(event : any){
-        const parentElement = event.target.parentElement
+        const parentElement = event.target.parentElement;
         const id = parentElement.dataset.id;
         let moded : any = {}
         moded[event.target.dataset.name] = event.target.innerHTML; 
+        fetch(`http://localhost:3000/rats/${id}`, {method: "PATCH", headers:{'Content-Type': 'application/json',}, body: JSON.stringify(moded)});
+    }
+
+    function switchPatch(event : any){
+        const parentElement = event.target.parentElement.parentElement.parentElement;
+        console.log(parentElement);
+        const id = parentElement.dataset.id;
+        let moded = {is_working: event.target.value}
         fetch(`http://localhost:3000/rats/${id}`, {method: "PATCH", headers:{'Content-Type': 'application/json',}, body: JSON.stringify(moded)});
     }
 
@@ -113,7 +121,7 @@ export default function Listing({ pagesOn = false, searchOn = false, orderOn = f
                         <td contentEditable={editOn} onKeyDown={onChangege} data-name={"special_dish"} onBlur={patch}>{e.special_dish}</td>
                         <td contentEditable={editOn} onKeyDown={onChangege} data-name={"height"} onBlur={patch}>{e.height}</td>
                         <td contentEditable={editOn} onKeyDown={onChangege} data-name={"salary"} onBlur={patch}>{e.salary}</td>
-                        <td><Switch round editOn={switchOn || editOn} defaultValue={e.is_working}/></td>
+                        <td><Switch round editOn={switchOn || editOn} defaultValue={e.is_working} onChange={switchPatch}/></td>
                         {deleteOn && <td onClick={del}>Delete</td>}
                     </tr>)}
                 </tbody>
