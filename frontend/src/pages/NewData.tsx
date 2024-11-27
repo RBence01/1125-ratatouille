@@ -16,7 +16,7 @@ export function NewData(){
         const job = e.target[6].value;
 
         const list = await fetch('http://localhost:3000/rats/ranks');
-        setRanking(await list.json());
+        list.json().then(e => setRanking(e.data));
         const response = await fetch('http://localhost:3000/rats', {
             method: 'POST',
             headers: {
