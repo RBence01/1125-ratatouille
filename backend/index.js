@@ -29,7 +29,7 @@ app.get('/rats', async (req, res) => {
         const validOrder = ['asc','desc'];
         if(order) if(!validOrder.includes(order))  order = null; 
 
-        const validOrderBy = ['id', 'species', 'name', 'special_dish', 'height', 'salary', 'ranking', 'job'];
+        const validOrderBy = ['id', 'species', 'name', 'special_dish', 'height', 'salary', 'ranking', 'job', 'is_working'];
         if(orderby) if(!validOrderBy.includes(orderby)) orderby = null;
 
         if(searchterm) searchterm = validOrderBy.map(e => e +` LIKE '%${searchterm}%'`).join(' OR ');
@@ -68,9 +68,9 @@ app.get('/rats/:id', async (req, res) => {
 
 app.post('/rats', async (req, res) => {
     try {
-        let tabletData = [req.body.species, req.body.name, req.body.special_dish, req.body.height, req.body.salary, req.body.ranking, req.body.job];
-        const [rows, fields] = await db.query('INSERT INTO chef_rats (species, name, special_dish, height, salary, ranking, job) VALUES (?,?,?,?,?,?,?)', tabletData);
-        res.redirect('http://localhost:5173/ratlista');
+        let ratData = [req.body.species, req.body.name, req.body.special_dish, req.body.height, req.body.salary, req.body.ranking, req.body.job, req.body.is_working];
+        const [rows, fields] = await db.query('INSERT INTO chef_rats (species, name, special_dish, height, salary, ranking, job, is_working) VALUES (?,?,?,?,?,?,?,?)', ratData);
+        res.redirect('http://localhost:5173/list');
     } 
     catch (error) {
         console.error(`Error inserting rats in the cage ${error}`);
