@@ -18,14 +18,14 @@ const db = mysql.createPool({
 app.get('/rats', async (req, res) => {
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || null;
-    let orderby = req.query.groupby || null;
+    let orderby = req.query.orderby || null;
     if (orderby) orderby = orderby.toLowerCase();
     let order = req.query.order || null;
     if (order) order = order.toLowerCase();
     let searchterm = req.query.searchterm || null;
-    let offset = 0;
+    let offset = null;
     if (limit) offset = (page - 1) * limit;
-    try {
+    //try {
         const validOrder = ['asc', 'desc'];
         if (order) if (!validOrder.includes(order)) order = null;
 
@@ -36,7 +36,7 @@ app.get('/rats', async (req, res) => {
 
         const countResult = await db.query('SELECT COUNT(*) as total FROM chef_rats' + ((searchterm) ? ` WHERE ${searchterm}` : ''));
         const total = countResult[0][0].total;
-        const temp = await db.query('SELECT * FROM chef_rats ' + (searchterm) ? `${searchterm} ` : '' + (orderby) ? `ORDER BY ${orderby} ` + (order ? `${order}` : '') : '' + (limit) ? `LIMIT ${limit}` : '' + '  OFFSET ?', [offset]);
+        const temp = await db.query('SELECT * FROM chef_rats ' + ((searchterm) ? `WHERE ${searchterm} ` : '') + ((orderby) ? `ORDER BY ${orderby} ` + (order ? `${order}` : '') : '') + ((limit) ? `LIMIT ${limit}` : '') + (offset && offset != 0 ? '  OFFSET ?' : ''));
         const rows = temp[0];
         const fields = temp[1];
         res.status(200).json({
@@ -44,10 +44,10 @@ app.get('/rats', async (req, res) => {
             currentPage: page,
             totalPages: Math.ceil(total / limit),
         });
-    } catch (error) {
+    /*} catch (error) {
         console.error(`Error retrieving rats ${error}`);
         res.status(500).json({ error: "Internal Server Error" });
-    }
+    }*/
 })
 
 app.get('/rats/:id', async (req, res) => {
