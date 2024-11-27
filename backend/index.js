@@ -69,7 +69,7 @@ app.get('/rats/:id', async (req, res) => {
 app.post('/rats', async (req, res) => {
     try {
         let ratData = [req.body.species, req.body.name, req.body.special_dish, req.body.height, req.body.salary, req.body.ranking, req.body.job, req.body.is_working];
-        const [rows, fields] = await db.query('INSERT INTO chef_rats (species, name, special_dish, height, salary, ranking, job, is_working) VALUES (?,?,?,?,?,?,?,?)', ratData);
+        const [rows, fields] = await db.query('INSERT INTO chef_rats (species, name, special_dish, height, salary, ranking, job) VALUES (?,?,?,?,?,?,?)', ratData);
         res.redirect('http://localhost:5173/list');
     } 
     catch (error) {
@@ -82,9 +82,16 @@ app.patch('/rats/:id', async (req, res) => {
     try {
         const id = req.params.id;
         const { species, name, special_dish, height, salary, ranking, job } = req.body;
+        const valid = ["species", "name", "special_dish", "height", "salary", "ranking", "job"];
+        let updateString = '';
+        valid.forEach(element => {
+            if(req.body[element]) updateString += ` ${element} = '${req.body[element]}',`;
+        });
+        updateString = updateString.slice(0, -1);
+
 
         const [rows, fields] = await db.query(
-            'UPDATE chef_rats SET ' + (species ? `species = ${species}, ` : '') + (name ? `name = ${name}, ` : '') + (special_dish ? `special_dish = ${special_dish}, ` : '') + (height ? `height = ${height}, ` : '') + (salary ? `salary = ${salary}, ` : '') + (ranking ? `ranking = ${ranking}, ` : '') + (job ? `job = ${job}, ` : '') +'WHERE id = ?',
+            'UPDATE chef_rats SET' + updateString +' WHERE id = ?',
             [id]
         );
 
