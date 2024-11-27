@@ -81,11 +81,30 @@ export default function Listing({ pagesOn = false, searchOn = false, orderOn = f
 
     function switchPatch(event : any){
         const parentElement = event.target.parentElement.parentElement.parentElement;
-        console.log(parentElement);
         const id = parentElement.dataset.id;
-        console.log(id);
         let moded = {is_working: event.target.value == 'on' ? 1 : 0}
         fetch(`http://localhost:3000/rats/${id}`, {method: "PATCH", headers:{'Content-Type': 'application/json',}, body: JSON.stringify(moded)});
+    }
+
+    function plusMinusInc(event: any) {
+        plusMinus(event, 100);
+    }
+
+    function plusMinusDec(event: any) {
+        plusMinus(event, -100);
+    }
+
+    function plusMinus(event: any, value: number) {
+        const element = event.target;
+        const id = element.parentElement.parentElement.dataset.id;
+        const children = element.parentElement.parentElement.children;
+        for (let i = 0; i < children.length; i++) {
+            if (children[i].dataset.name == "salary") {
+                const text = children[i].children[1];
+                text.innerHTML = (parseFloat(text.innerHTML) + value).toFixed(2);
+            }
+        }
+        fetch(`http://localhost:3000/rats/change/${id}`, {method: "PATCH", headers:{'Content-Type': 'application/json',}, body: JSON.stringify({value: value})});
     }
 
     let pages;
@@ -122,7 +141,7 @@ export default function Listing({ pagesOn = false, searchOn = false, orderOn = f
                         <td contentEditable={editOn} onKeyDown={onChangege} data-name={"job"} onBlur={editOn ? patch : () => {}}>{e.job}</td>
                         <td contentEditable={editOn} onKeyDown={onChangege} data-name={"special_dish"} onBlur={editOn ? patch : () => {}}>{e.special_dish}</td>
                         <td contentEditable={editOn} onKeyDown={onChangege} data-name={"height"} onBlur={editOn ? patch : () => {}}>{e.height}</td>
-                        <td contentEditable={editOn} onKeyDown={onChangege} data-name={"salary"} onBlur={editOn ? patch : () => {}}>{plusMinusOn && <button>←</button>}{e.salary}{plusMinusOn && <button>→</button>}</td>
+                        <td contentEditable={editOn} onKeyDown={onChangege} data-name={"salary"} onBlur={editOn ? patch : () => {}}>{plusMinusOn && <button onClick={plusMinusDec}>←</button>}<span>{e.salary}</span>{plusMinusOn && <button onClick={plusMinusInc}>→</button>}</td>
                         <td><Switch round editOn={switchOn || editOn} defaultValue={e.is_working} onChange={switchPatch}/></td>
                         {deleteOn && <td onClick={del}>Delete</td>}
                     </tr>)}

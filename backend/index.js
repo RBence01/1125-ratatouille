@@ -30,7 +30,7 @@ app.get('/rats', async (req, res) => {
         if (order) if (!validOrder.includes(order)) order = null;
 
         const validOrderBy = ['id', 'species', 'name', 'special_dish', 'height', 'salary', 'ranking', 'job', 'is_working'];
-        if(orderby) if(!validOrderBy.includes(orderby)) orderby = null;
+        if (orderby) if (!validOrderBy.includes(orderby)) orderby = null;
 
         if (searchterm) searchterm = validOrderBy.map(e => e + ` LIKE '%${searchterm}%'`).join(' OR ');
 
@@ -78,7 +78,7 @@ app.post('/rats', async (req, res) => {
     try {
         let ratData = [req.body.species, req.body.name, req.body.special_dish, req.body.height, req.body.salary, req.body.ranking, req.body.job, req.body.is_working];
         const [rows, fields] = await db.query('INSERT INTO chef_rats (species, name, special_dish, height, salary, ranking, job) VALUES (?,?,?,?,?,?,?)', ratData);
-    } 
+    }
     catch (error) {
         console.error(`Error inserting rats in the cage ${error}`);
         res.status(500).send("Internal Server Error");
@@ -91,15 +91,31 @@ app.patch('/rats/:id', async (req, res) => {
         const valid = ["species", "name", "special_dish", "height", "salary", "ranking", "job", "is_working"];
         let updateString = '';
         valid.forEach(element => {
-            if(req.body[element]) updateString += ` ${element} = '${req.body[element]}',`;
+            if (req.body[element]) updateString += ` ${element} = '${req.body[element]}',`;
         });
         updateString = updateString.slice(0, -1);
 
-        console.log(updateString);
         const [rows, fields] = await db.query(
-            'UPDATE chef_rats SET' + updateString +' WHERE id = ?',
+            'UPDATE chef_rats SET' + updateString + ' WHERE id = ?',
             [id]
         );
+    }
+    catch (error) {
+        console.error(`Error updating the rat record: ${error}`);
+        res.status(500).send("Internal Server Error");
+    }
+});
+
+app.patch('/rats/change/:id', async (req, res) => {
+    try {
+        const id = req.params.id;
+        const value = req.body.value;
+        if (!id || !value) {
+            res.status(400).send("Bad request!");
+            return;
+        }
+        await db.query("UPDATE chef_rats SET salary = salary + ? WHERE id = id", [value, id]);
+
     }
     catch (error) {
         console.error(`Error updating the rat record: ${error}`);
