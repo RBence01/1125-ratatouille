@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { chefRat } from "../Types";
 import "../css/Listing.css";
 
-export default function Listing({ pagesOn = false, searchOn = false, orderOn = false, deleteOn = false }: { pagesOn?: boolean, searchOn?: boolean, orderOn?: boolean, deleteOn?: boolean }) {
+export default function Listing({ pagesOn = false, searchOn = false, orderOn = false, deleteOn = false, switchOn = false, editOn = false}: { pagesOn?: boolean, searchOn?: boolean, orderOn?: boolean, deleteOn?: boolean, switchOn?: boolean, editOn?: boolean}) {
     const [data, setData] = useState<{ data: chefRat[], totalPages: number } | null>(null);
     const [sortData, setSortData] = useState<{ col: string, direction: string } | undefined>(undefined);
     const [searchQuery, setSearchQuery] = useState<string | undefined>(undefined);
@@ -86,7 +86,8 @@ export default function Listing({ pagesOn = false, searchOn = false, orderOn = f
                         <th className={orderOn ? "sort" : ""} onClick={sort} data-name={"job"}>Job</th>
                         <th className={orderOn ? "sort" : ""} onClick={sort} data-name={"special_dish"}>Special Dish</th>
                         <th className={orderOn ? "sort" : ""} onClick={sort} data-name={"height"}>Height</th>
-                        <th className={orderOn ? "sort" : ""} onClick={sort} data-name={"salary"}>salary</th>
+                        <th className={orderOn ? "sort" : ""} onClick={sort} data-name={"salary"}>Salary</th>
+                        { switchOn && <th className={orderOn ? "sort" : ""} onClick={sort} data-name={"is_working"}>Is Working</th> }
                     </tr>
                 </thead>
                 <tbody>
@@ -98,6 +99,7 @@ export default function Listing({ pagesOn = false, searchOn = false, orderOn = f
                         <td>{e.special_dish}</td>
                         <td>{e.height}</td>
                         <td>{e.salary}</td>
+                        {switchOn && <td></td>}
                         {deleteOn && <td onClick={del}>Delete</td>}
                     </tr>)}
                 </tbody>

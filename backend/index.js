@@ -29,13 +29,8 @@ app.get('/rats', async (req, res) => {
         const validOrder = ['asc', 'desc'];
         if (order) if (!validOrder.includes(order)) order = null;
 
-<<<<<<< HEAD
         const validOrderBy = ['id', 'species', 'name', 'special_dish', 'height', 'salary', 'ranking', 'job', 'is_working'];
         if(orderby) if(!validOrderBy.includes(orderby)) orderby = null;
-=======
-        const validOrderBy = ['id', 'species', 'name', 'special_dish', 'height', 'salary', 'ranking', 'job'];
-        if (orderby) if (!validOrderBy.includes(orderby)) orderby = null;
->>>>>>> e51d89da76665932f80c47f00fa6507e3066242f
 
         if (searchterm) searchterm = validOrderBy.map(e => e + ` LIKE '%${searchterm}%'`).join(' OR ');
 
