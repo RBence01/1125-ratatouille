@@ -19,6 +19,7 @@ createRoot(document.getElementById('root')!).render(
           <Route path='pages' element={<Listing pagesOn/>} />
           <Route path='delete' element={<Listing deleteOn/>} />
           <Route path='switch' element={<Listing />} />
+          <Route path='edit' element={<Listing editOn/>} />
         </Route>
     </Routes>
     </BrowserRouter>

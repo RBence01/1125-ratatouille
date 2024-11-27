@@ -79,12 +79,19 @@ app.post('/rats', async (req, res) => {
 })
 
 app.patch('/rats/:id', async (req, res) => {
-    try {
+    //try {
         const id = req.params.id;
         const { species, name, special_dish, height, salary, ranking, job } = req.body;
+        const valid = ["species", "name", "special_dish", "height", "salary", "ranking", "job"];
+        let updateString = '';
+        valid.forEach(element => {
+            if(req.body[element]) updateString += ` ${element} = '${req.body[element]}',`;
+        });
+        updateString = updateString.slice(0, -1);
+
 
         const [rows, fields] = await db.query(
-            'UPDATE chef_rats SET ' + (species ? `species = ${species}, ` : '') + (name ? `name = ${name}, ` : '') + (special_dish ? `special_dish = ${special_dish}, ` : '') + (height ? `height = ${height}, ` : '') + (salary ? `salary = ${salary}, ` : '') + (ranking ? `ranking = ${ranking}, ` : '') + (job ? `job = ${job}, ` : '') +'WHERE id = ?',
+            'UPDATE chef_rats SET' + updateString +' WHERE id = ?',
             [id]
         );
 
@@ -93,11 +100,11 @@ app.patch('/rats/:id', async (req, res) => {
         } else {
             res.status(404).send("Rat not found");
         }
-    }
+    /*}
     catch (error) {
         console.error(`Error updating the rat record: ${error}`);
         res.status(500).send("Internal Server Error");
-    }
+    }*/
 });
 
 app.delete('/rats/:id', async (req, res) => {

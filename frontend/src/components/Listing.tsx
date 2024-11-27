@@ -63,6 +63,19 @@ export default function Listing({ pagesOn = false, searchOn = false, orderOn = f
         fetch("http://localhost:3000/rats/"+id, {method: "DELETE"});
         parentElement.remove();
     }
+    function onChangege(event: any){
+        if(event.key == 'Enter'){
+            event.target.blur();
+        }
+    }
+
+    function patch(event : any){
+        const parentElement = event.target.parentElement
+        const id = parentElement.dataset.id;
+        let moded : any = {}
+        moded[event.target.dataset.name] = event.target.innerHTML; 
+        fetch(`http://localhost:3000/rats/${id}`, {method: "PATCH", headers:{'Content-Type': 'application/json',}, body: JSON.stringify(moded)});
+    }
 
     let pages;
     if (data?.totalPages) {
@@ -93,12 +106,12 @@ export default function Listing({ pagesOn = false, searchOn = false, orderOn = f
                 <tbody>
                     {data && data.data.map((e) => <tr key={e.id} data-id={e.id}>
                         <td>{e.ranking}</td>
-                        <td>{e.species}</td>
-                        <td>{e.name}</td>
-                        <td>{e.job}</td>
-                        <td>{e.special_dish}</td>
-                        <td>{e.height}</td>
-                        <td>{e.salary}</td>
+                        <td contentEditable={editOn} onKeyDown={onChangege} data-name={"species"} onBlur={patch}>{e.species}</td>
+                        <td contentEditable={editOn} onKeyDown={onChangege} data-name={"name"} onBlur={patch}>{e.name}</td>
+                        <td contentEditable={editOn} onKeyDown={onChangege} data-name={"job"} onBlur={patch}>{e.job}</td>
+                        <td contentEditable={editOn} onKeyDown={onChangege} data-name={"special_dish"} onBlur={patch}>{e.special_dish}</td>
+                        <td contentEditable={editOn} onKeyDown={onChangege} data-name={"height"} onBlur={patch}>{e.height}</td>
+                        <td contentEditable={editOn} onKeyDown={onChangege} data-name={"salary"} onBlur={patch}>{e.salary}</td>
                         {switchOn && <td></td>}
                         {deleteOn && <td onClick={del}>Delete</td>}
                     </tr>)}
