@@ -98,8 +98,8 @@ export default function Listing({ pagesOn = false, searchOn = false, orderOn = f
                         <td>{e.name}</td>
                         <td>{e.job}</td>
                         <td>{e.special_dish}</td>
-                        <td>{e.height}</td>
-                        <td>{e.salary}</td>
+                        <td>{e.height} cm</td>
+                        <td>{e.salary} $</td>
                         {switchOn && <td><Switch round/></td>}
                         {deleteOn && <td onClick={del}>Delete</td>}
                     </tr>)}
