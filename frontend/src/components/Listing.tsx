@@ -84,7 +84,7 @@ export default function Listing({ pagesOn = false, searchOn = false, orderOn = f
         console.log(parentElement);
         const id = parentElement.dataset.id;
         console.log(id);
-        let moded = {is_working: event.target.value}
+        let moded = {is_working: event.target.value == 'on' ? 1 : 0}
         fetch(`http://localhost:3000/rats/${id}`, {method: "PATCH", headers:{'Content-Type': 'application/json',}, body: JSON.stringify(moded)});
     }
 

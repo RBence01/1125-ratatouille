@@ -88,7 +88,6 @@ app.post('/rats', async (req, res) => {
 app.patch('/rats/:id', async (req, res) => {
     try {
         const id = req.params.id;
-        const { species, name, special_dish, height, salary, ranking, job } = req.body;
         const valid = ["species", "name", "special_dish", "height", "salary", "ranking", "job", "is_working"];
         let updateString = '';
         valid.forEach(element => {
@@ -96,7 +95,7 @@ app.patch('/rats/:id', async (req, res) => {
         });
         updateString = updateString.slice(0, -1);
 
-
+        console.log(updateString);
         const [rows, fields] = await db.query(
             'UPDATE chef_rats SET' + updateString +' WHERE id = ?',
             [id]
