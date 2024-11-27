@@ -1,9 +1,9 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Alert, Button, Col, Container, Form, Row } from "react-bootstrap";
 
 export function NewData(){
     const [status, setStatus] = useState<string | null>(null);
-    const [rankings, setRanking] = useState<string | null>(null);
+    const [rankings, setRanking] = useState<number[] | null>(null);
 
     async function submit(e: any) {
         e.preventDefault();
@@ -12,11 +12,12 @@ export function NewData(){
         const special_dish = e.target[2].value;
         const height = e.target[3].value;
         const salary = e.target[4].value;
-        const ranking = e.target[5].value;
+        const ranking : number = e.target[5].value;
         const job = e.target[6].value;
 
-        const list = await fetch('http://localhost:3000/rats/ranks');
-        list.json().then(e => setRanking(e.data));
+        console.log(rankings!.includes(ranking));
+        
+        
         const response = await fetch('http://localhost:3000/rats', {
             method: 'POST',
             headers: {
@@ -32,7 +33,7 @@ export function NewData(){
                 job
             }),
         });
-        if (!rankings?.includes(ranking)) {
+        if (!rankings!.includes(ranking)) {
             if (response.status === 201) {
                 setStatus('New rat added!');
                 console.log(status);
@@ -44,6 +45,10 @@ export function NewData(){
         }
         
     }
+
+    useEffect(() => {
+        fetch('http://localhost:3000/rats/ranks').then(e => e.json()).then( e => setRanking(e.data)); 
+    }, []);
 
     return(
         <>

@@ -52,7 +52,7 @@ app.get('/rats', async (req, res) => {
 
 app.get('/rats/ranks', async (req, res) => {
     const result = await db.query('SELECT `ranking` FROM `chef_rats`');
-    const rows =  result[0];
+    const rows = result[0].map(e => e.ranking);
     res.status(200).json({
         data: rows
     });
