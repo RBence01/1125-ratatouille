@@ -25,7 +25,7 @@ app.get('/rats', async (req, res) => {
     let searchterm = req.query.searchterm || null;
     let offset = null;
     if (limit) offset = (page - 1) * limit;
-    //try {
+    try {
         const validOrder = ['asc', 'desc'];
         if (order) if (!validOrder.includes(order)) order = null;
 
@@ -44,10 +44,10 @@ app.get('/rats', async (req, res) => {
             currentPage: page,
             totalPages: Math.ceil(total / limit),
         });
-    /*} catch (error) {
+    } catch (error) {
         console.error(`Error retrieving rats ${error}`);
         res.status(500).json({ error: "Internal Server Error" });
-    }*/
+    }
 })
 
 app.get('/rats/:id', async (req, res) => {
