@@ -46,13 +46,13 @@ export function NewData(){
                     <input type="text" name="sepcies" id="sepcies" required /><br />
 
                     <label htmlFor="name">Name</label><br />
-                    <input type="number" name="name" id="name" required /><br />
+                    <input type="text" name="name" id="name" required /><br />
 
                     <label htmlFor="special_dish">Special Dish</label><br />
                     <input type="text" name="special_dish" id="special_dish" required /><br />
 
                     <label htmlFor="height">Height</label><br />
-                    <input type="text" name="height" id="height" required min={0}/><br />
+                    <input type="number" name="height" id="height" required min={0}/><br />
 
                     <label htmlFor="salary">Salary</label><br />
                     <input type="number" name="salary" id="salary" required min={0} /><br />
@@ -61,7 +61,7 @@ export function NewData(){
                     <input type="number" name="ranking" id="ranking" required min={0} /><br />
 
                     <label htmlFor="job">Job</label><br />
-                    <input type="number" name="job" id="job" required /><br />
+                    <input type="string" name="job" id="job" required /><br />
 
                     <Button variant="dark" type="submit" value="submit">
                         Submit
