@@ -5,7 +5,6 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import Layout from './pages/Layout'
 import Listing from './components/Listing'
 import { NewData } from './pages/NewData'
-import Switch from './components/Switch'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
