@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { chefRat } from "../Types";
 import "../css/Listing.css";
 
-export default function Listing({ pagesOn = false, searchOn = false, orderOn = false }: { pagesOn?: boolean, searchOn?: boolean, orderOn?: boolean }) {
+export default function Listing({ pagesOn = false, searchOn = false, orderOn = false, deleteOn = false }: { pagesOn?: boolean, searchOn?: boolean, orderOn?: boolean, deleteOn?: boolean }) {
     const [data, setData] = useState<{ data: chefRat[], totalPages: number } | null>(null);
     const [sortData, setSortData] = useState<{ col: string, direction: string } | undefined>(undefined);
     const [searchQuery, setSearchQuery] = useState<string | undefined>(undefined);
@@ -57,6 +57,13 @@ export default function Listing({ pagesOn = false, searchOn = false, orderOn = f
         else setPage(pageValue);
     }
 
+    function del(event: any){
+        const parentElement = event.target.parentElement
+        const id = parentElement.dataset.id;
+        fetch("http://localhost:3000/rats"+id, {method: "DELETE"});
+        parentElement.remove();
+    }
+
     let pages;
     if (data?.totalPages) {
         pages = [];
@@ -83,7 +90,7 @@ export default function Listing({ pagesOn = false, searchOn = false, orderOn = f
                     </tr>
                 </thead>
                 <tbody>
-                    {data && data.data.map((e) => <tr key={e.id}>
+                    {data && data.data.map((e) => <tr key={e.id} data-id={e.id}>
                         <td>{e.ranking}</td>
                         <td>{e.species}</td>
                         <td>{e.name}</td>
@@ -91,6 +98,7 @@ export default function Listing({ pagesOn = false, searchOn = false, orderOn = f
                         <td>{e.special_dish}</td>
                         <td>{e.height}</td>
                         <td>{e.salary}</td>
+                        {deleteOn && <td onClick={del}>Delete</td>}
                     </tr>)}
                 </tbody>
             </table>
