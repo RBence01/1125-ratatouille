@@ -14,6 +14,7 @@ export function NavBar (){
           <Nav.Link href="/search">Search</Nav.Link>
           <Nav.Link href="/order">Order</Nav.Link>
           <Nav.Link href="/pages">Pages</Nav.Link>
+          <Nav.Link href="/switch">Switching</Nav.Link>
         </Nav>
       </Navbar.Collapse>
     </Container>
