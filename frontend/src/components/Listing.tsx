@@ -60,7 +60,7 @@ export default function Listing({ pagesOn = false, searchOn = false, orderOn = f
     function del(event: any){
         const parentElement = event.target.parentElement
         const id = parentElement.dataset.id;
-        fetch("http://localhost:3000/rats"+id, {method: "DELETE"});
+        fetch("http://localhost:3000/rats/"+id, {method: "DELETE"});
         parentElement.remove();
     }
 
