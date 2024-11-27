@@ -79,7 +79,7 @@ app.post('/rats', async (req, res) => {
 })
 
 app.patch('/rats/:id', async (req, res) => {
-    //try {
+    try {
         const id = req.params.id;
         const { species, name, special_dish, height, salary, ranking, job } = req.body;
         const valid = ["species", "name", "special_dish", "height", "salary", "ranking", "job"];
@@ -100,11 +100,11 @@ app.patch('/rats/:id', async (req, res) => {
         } else {
             res.status(404).send("Rat not found");
         }
-    /*}
+    }
     catch (error) {
         console.error(`Error updating the rat record: ${error}`);
         res.status(500).send("Internal Server Error");
-    }*/
+    }
 });
 
 app.delete('/rats/:id', async (req, res) => {
