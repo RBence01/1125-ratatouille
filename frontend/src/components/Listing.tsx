@@ -100,7 +100,7 @@ export default function Listing({ pagesOn = false, searchOn = false, orderOn = f
                         <td>{e.special_dish}</td>
                         <td>{e.height} cm</td>
                         <td>{e.salary} $</td>
-                        {switchOn && <td><Switch round/></td>}
+                        <td><Switch round editOn={switchOn} defaultValue={e.is_working}/></td>
                         {deleteOn && <td onClick={del}>Delete</td>}
                     </tr>)}
                 </tbody>
