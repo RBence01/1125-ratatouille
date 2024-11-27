@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { chefRat } from "../Types";
 import "../css/Listing.css";
+import Switch from "./Switch";
 
 export default function Listing({ pagesOn = false, searchOn = false, orderOn = false, deleteOn = false, switchOn = false, editOn = false}: { pagesOn?: boolean, searchOn?: boolean, orderOn?: boolean, deleteOn?: boolean, switchOn?: boolean, editOn?: boolean}) {
     const [data, setData] = useState<{ data: chefRat[], totalPages: number } | null>(null);
@@ -99,7 +100,7 @@ export default function Listing({ pagesOn = false, searchOn = false, orderOn = f
                         <td>{e.special_dish}</td>
                         <td>{e.height}</td>
                         <td>{e.salary}</td>
-                        {switchOn && <td></td>}
+                        {switchOn && <td><Switch round/></td>}
                         {deleteOn && <td onClick={del}>Delete</td>}
                     </tr>)}
                 </tbody>
