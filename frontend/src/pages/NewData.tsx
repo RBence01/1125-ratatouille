@@ -31,6 +31,7 @@ export function NewData(){
         });
         if (response.status === 201) {
             setStatus('New rat added!');
+            console.log(status);
         } else {
             setStatus('Error: ' + (await response.text()));
         }
